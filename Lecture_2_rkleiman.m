@@ -1,4 +1,4 @@
-%NOTE: need MatToVec.m function file as well
+%NOTE: need MatToVec.m function file as well (ENEC-490/MatToVec_rkleiman.m)
 %BASIC MATLAB OPERATIONS
 
 %Q1
