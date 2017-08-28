@@ -1,3 +1,4 @@
+%NOTE: need MatToVec.m function file as well
 %BASIC MATLAB OPERATIONS
 
 %Q1
