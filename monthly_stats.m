@@ -1,11 +1,11 @@
 function [ m ] = monthly_stats ( data )
 %Creates mean and STD from monthly stats
-% copied from session_7.m
 
+%Copied partially from session_7.m
 [rows,~]=size(data);
 years = int8(rows/12);
 monthly = zeros(12,years);
-for i = 1:years
+for i = 1:(years-1)
     monthly(:,i) = data(((1+(i-1)*12):(12+(i-1)*12)));
 end
 
