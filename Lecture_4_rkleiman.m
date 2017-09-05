@@ -1,6 +1,8 @@
 %Copied from Lecture4.m 
 %Statistics
 
+%see annualfunction2.m for function
+
 %% my notes from class:
 %use cell2mat when using the combined matrix
 %kwh is energy, kw is just potential to create energy
