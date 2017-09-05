@@ -87,20 +87,6 @@ for i = 1:num_years
     end
 end
 
-figure;
-%bootstrap sample--doesn't account for that slight upward trend
-subplot(1,2,1);
-plot(bootstrap_sample);
-xlabel('Year','FontSize',14);
-ylabel('Demand (MWh)','FontSize',14);
-title('Bootsrapped sample')
-
-%autocorrelation
-subplot(1,2,2);
-autocorr(bootstrap_sample);
-xlabel('Months','FontSize',14);
-ylabel('Autocorrelation','FontSize',14);
-
 %% 6 Montecarlo
 
 %was supposed to do mean and variance for each month
