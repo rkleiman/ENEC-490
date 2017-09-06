@@ -153,6 +153,6 @@ figure
 scatter(temperature(:,2), peak)
 xlabel('Temperature (F)');
 ylabel('Peak Demand (MWh)');
-
+title('Temperature vs. Peak Demand');
                 
                 
