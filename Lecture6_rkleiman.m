@@ -80,27 +80,16 @@ vectorWeekly=vector(1:365);
 peakWeek=zeros(365,2);
 peakWeek(:,1)=peak;
 peakWeek(:,2)=vectorWeekly;
-peakStat=zeros(7,3);
-peakStat(:,1)=1:1:7; 
 
-% figure; 
-% ylabel('Energy Demand (Gwh)')
-% xlabel('Day')
-% title ('Average Energy Demand on each Week Day')
-
-%label= [Sun Mon Tue Wed Thu Fri Sat];
-
-Sun=peakWeek(peakWeek(:,2)==1,1);
-Mon=peakWeek(peakWeek(:,2)==2,1);
-Tue=peakWeek(peakWeek(:,2)==3,1);
-Wed=peakWeek(peakWeek(:,2)==4,1);
-Thu=peakWeek(peakWeek(:,2)==5,1);
-Fri=peakWeek(peakWeek(:,2)==6,1);
-Sat=peakWeek(peakWeek(:,2)==7,1);
+Wed=peakWeek(peakWeek(:,2)==1,1);
+Thu=peakWeek(peakWeek(:,2)==2,1);
+Fri=peakWeek(peakWeek(:,2)==3,1);
+Sat=peakWeek(peakWeek(:,2)==4,1);
+Sun=peakWeek(peakWeek(:,2)==5,1);
+Mon=peakWeek(peakWeek(:,2)==6,1);
+Tue=peakWeek(peakWeek(:,2)==7,1);
 
 figure;
-
-
 subplot(1,7,1)
 boxplot(Sun)
 ylim([70,140]);
