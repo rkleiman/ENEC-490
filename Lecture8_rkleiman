@@ -1,0 +1,88 @@
+%Lecture8
+
+%import relevant data 
+[data text combined] = xlsread('N3045US3m.xls','Data 1');
+
+data=data(:,2);
+
+%histogram of 2002-2016 gas price data
+histogram(data); 
+
+% log transformation
+transformed_data = log(data);
+
+%histogram of log transformed data
+figure;
+histogram(transformed_data); 
+xlabel('Log Natural Gas Price ($/MMBtu)','FontSize',14);
+ylabel('Frequency','FontSize',14);
+
+%number of years in dataset
+years = length(data)/12;
+
+%convert to 12 x N matrix
+monthly_matrix = VecToMat(transformed_data,12,years);
+
+% mean and standard deviation of log-transformed data by month
+stats = zeros(12,2);
+for i = 1:12
+    stats(i,1) = mean(monthly_matrix(i,:));
+    stats(i,2) = std(monthly_matrix(i,:));
+end
+
+%identify months
+months = {'Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'};
+
+figure; 
+hold on;
+%bin 'edges'
+edges = 0:0.5:30;
+
+%highest mean
+idx = find(stats(:,1) == max(stats(:,1)));
+sample = stats(idx,1) + stats(idx,2)*randn(1000,1);
+back_transformed = exp(sample);
+histogram(back_transformed,edges);
+label_1 = strcat(months{idx},' - Highest Mean');
+
+%lowest mean
+idx = find(stats(:,1) == min(stats(:,1)));
+sample = stats(idx,1) + stats(idx,2)*randn(1000,1);
+back_transformed = exp(sample);
+histogram(back_transformed,edges);
+label_1 = strcat(months{idx},' - Lowest Mean');
+
+%highest std
+idx = find(stats(:,2) == max(stats(:,2)));
+sample = stats(idx,1) + stats(idx,2)*randn(1000,1);
+back_transformed = exp(sample);
+histogram(back_transformed,edges);
+label_1 = strcat(months{idx},' - Highest Standard Deviation');
+
+%lowest std
+idx = find(stats(:,2) == min(stats(:,2)));
+sample = stats(idx,1) + stats(idx,2)*randn(1000,1);
+back_transformed = exp(sample);
+histogram(back_transformed,edges);
+label_1 = strcat(months{idx},' - Lowest Standard Deviation');
+legend("Highest Mean", "Lowest Mean", "Highest Standard Deviation", "Lowest Standard Deviation");
+xlabel('Years','FontSize',14);
+ylabel('Natural Gas Price','FontSize',14);
+title('Months from  with Extreme Statistics')
+
+%boxplot
+figure;
+boxplot(rot90(monthly_matrix))
+xlabel('Month','FontSize',14);
+ylabel('Natural Gas Price','FontSize',14);
+title ('Monthly Gas Prices');
+
+figure;
+plot(data)
+xlabel('Time','FontSize',14);
+ylabel('Natural Gas Price','FontSize',14);
+title ('Gas Prices from 2002-2017')
+
+%the boxplot shows that there isn't a trend in variation throughout
+%seasons, suggesting that the prices are more effected by extreme events
+%than by seasons.
