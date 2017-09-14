@@ -1,0 +1,40 @@
+%find rows in 2015_coal that don't match 2012_coal and make a histogram of
+%those
+%setdiff(array,array2) function 
+
+[num2012 word combined]=xlsread("coal860_data.xlsx","2012_coal");
+[num2015 word2 combined2]=xlsread("coal860_data.xlsx","2015_coal");
+
+years=1925:1:2012;
+[rows, columns]=size(years)
+bins=zeros(columns,1); 
+
+for i =1:length(num2012)
+    yr=num2012(i,4);
+    bin_number=find(years==yr);
+    bins(bin_number)=bins(bin_number)+num2012(i,3);
+end 
+    
+figure;
+bar(bins, 'FaceColor', [.8 .8 .8], 'EdgeColor', [.7 .7 .7])
+%ax.XTickLabel=({'1925','1926','1927','1928','1929','1930','1931','1932','1933','1934','1935',1936'})
+hold on; 
+
+%% plants that closed after 2012
+
+a=setdiff(num2012, num2015,'rows');
+
+years2=1925:1:2012;
+[rows, columns]=size(years2);
+bins2=zeros(columns,1);
+
+for i =1:length(a)
+    yr=a(i,4);
+    bin_number=find(years2==yr);
+    bins2(bin_number)=bins2(bin_number)+a(i,3);
+end 
+
+bar(bins2)
+
+
+
