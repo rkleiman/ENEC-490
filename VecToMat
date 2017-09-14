@@ -1,0 +1,17 @@
+function [ m ] = VecToMat(vector, rows, columns )
+%Convert a vector to a matrix
+%   Detailed explanation goes here
+
+rows=int8(rows);
+columns=int8(columns);
+
+counter=0; 
+m=zeros(rows, columns); %zeros is a function that gives you zeroes as a place hlder
+for i=1:columns
+    for j =1:rows
+        counter=counter+1;
+        m(j,i) = vector (counter);
+    end
+end
+end
+
