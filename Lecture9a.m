@@ -19,7 +19,7 @@ b=strcmp(fuel,text(:,2));
 solar_prob=sum(b)/length(data)
 
 %6
-c=(data)>=cf;
+c=(data)>cf;
 cf_prob=sum(c)/length(data)
 
 %7b
@@ -41,7 +41,7 @@ sun_nc=strcmp(fuel,nc_plant(:,2));
 sun__giv_nc_prob=sum(sun_nc)/length(nc_plant)
 
 % iii
-c=(data)>=cf;
+c=(data)>cf;
 cf_rows=find(c(:,1)>0);
 cf_plant=text(cf_rows,:);
 
@@ -56,16 +56,13 @@ cf_nc_sun_plant=cf_nc_plant(cf_nc_sun_rows,:);
 cf_nc_sun_prob=length(cf_nc_sun_plant)/length(data)
 
 %iv
-nc = strcmp(state,text(:,1)); 
+nc = strcmp(state,combined(:,1)); 
 nc_rows=find(nc(:,1)>0);
-nc_plant=text(nc_rows,:);
+nc_plant=combined(nc_rows,:);
 solar=strcmp(fuel, nc_plant(:,2));
 solar_rows=find(solar(:,1)>0);
 nc_solar_plant=nc_plant(solar_rows,:);
-
-% have to go back to the data vector somehow
-c=(nc_solar_plant)>=cf;
-cf_giv_nc__solar_prob=sum(c)/length(nc_plant)
+cf_giv_nc__solar_prob=length(cf_nc_sun_plant)/length(nc_solar_plant)
 
 
 %v the numerator of both probabilities is the same-- what changes is the
