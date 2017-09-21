@@ -1,0 +1,98 @@
+%Lecture10
+
+data=xlsread('catawba_data.xlsx');
+
+temps = data(:,4);
+flows = data(:,5);
+
+days=length(temps);
+
+% Time series of W(water temp) and losses
+W = zeros(days,1); 
+losses = zeros(days,1);
+
+for i = 1:days
+    
+    W(i) = (33.3/(1+exp(.15*(16.9-temps(i)))) + 127/flows(i));
+    
+    if W(i) > 37 && W(i) <= 40
+    losses(i) = .25*2000*24;
+    elseif W(i) > 40 && W(i) <= 42
+    losses(i) = .50*2000*24;
+    elseif W(i) > 42
+    losses(i) = 2000*24;
+    end
+        
+end
+
+% Convert losses to $1000s
+losses_dollars = (losses*100)/1000;
+
+annual_losses = zeros(41,1);
+
+for i = 1:41
+    annual_losses(i) = sum(losses_dollars((i-1)*365+1:(i-1)*365+365));
+end
+
+
+sorted_losses = sort(annual_losses);
+idx = round(.95*41);
+CVar = sorted_losses(idx);
+
+
+cc_temps=zeros(length(temps),1);
+for i = 1:length(temps)
+    cc_temps(i) = temps(i) + 2;
+end
+
+log_flows=log(flows);
+mu=mean(log_flows);
+st_f=std(log_flows);
+
+whitened_flows=(log_flows - mu)/st_f;
+
+cc_mu=.9*mu;
+cc_st_f=1.2*st_f;
+
+cc_log_flows=(whitened_flows*cc_st_f)+cc_mu;
+cc_flows=exp(cc_log_flows);
+
+cc_W = zeros(days,1); 
+cc_losses = zeros(days,1);
+
+for i = 1:days
+    
+    cc_W(i) = (33.3/(1+exp(.15*(16.9-cc_temps(i)))) + 127/cc_flows(i));
+    
+    if cc_W(i) > 37 && cc_W(i) <= 40
+    cc_losses(i) = .25*2000*24;
+    elseif cc_W(i) > 40 && cc_W(i) <= 42
+    cc_losses(i) = .50*2000*24;
+    elseif cc_W(i) > 42
+    cc_losses(i) = 2000*24;
+    end
+        
+end
+
+cc_losses_dollars = (cc_losses*100)/1000;
+
+cc_annual_losses = zeros(41,1);
+
+for i = 1:41
+    cc_annual_losses(i) = sum(cc_losses_dollars((i-1)*365+1:(i-1)*365+365));
+end
+
+cc_sorted_losses = sort(cc_annual_losses);
+idx = round(.95*41);
+cc_CVar = cc_sorted_losses(idx);
+
+b=ceil(max(cc_annual_losses)/100000)*100000;
+edges=[0:10000:b];
+
+figure;
+hold on;
+histogram(annual_losses,edges);
+histogram(cc_annual_losses,edges);
+ylabel('Frequency','FontSize',14);
+xlabel('Losses $1000s','FontSize',14);
+legend('1970-2010','Climate Change');
